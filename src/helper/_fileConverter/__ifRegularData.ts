@@ -1,15 +1,27 @@
 import { IOptions } from "./../../types/saveFile.interface";
 
-function _ifExpress() {}
-export function _ifRegularFile(
-  file: any,
-  options: IOptions | undefined | { fileType: string }
-) {
+function __ifMulter(file: any) {
+  return {
+    result: file,
+    fileExtension: file.originalname.split(".").pop(),
+  };
+}
+type OptionRegularFile = IOptions | undefined;
+function __ifBuffer(file: any, options: OptionRegularFile) {
+  return { result: file, fileExtension: options?.fileExtention || "txt" };
+}
+export function _ifRegularFile(file: any, options: OptionRegularFile) {
   options = options ? options : { fileType: "express" };
-  switch (options.fileType.toLocaleLowerCase()) {
-    case "express":
-      _ifExpress();
-      break;
+  const obj = {
+    multer: (file: any) => __ifMulter(file),
+    buffer: (file: any) => __ifBuffer(file, options),
+  };
+  const key: string = options.fileType?.toLocaleLowerCase() || "multer";
+  let response = null;
+  const current = obj[key as keyof Object];
+  if (current) {
+    response = current(file);
   }
-  return { result: file, fileExtension: file.originalname.split(".").pop() };
+  response = obj["buffer"](file);
+  return response;
 }

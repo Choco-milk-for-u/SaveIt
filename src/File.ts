@@ -4,9 +4,10 @@ export class File {
   private type: string = "";
   private filePath: string = "";
   private fileName: string = "";
-  constructor(file: any, filePath: string) {
+  constructor(file: any, filePath: string, type: string) {
     this.file = file;
     this.filePath = filePath;
+    this.type = type;
   }
   setFile = (file: any) => {
     this.file = file;

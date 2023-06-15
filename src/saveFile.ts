@@ -1,24 +1,26 @@
 import { File } from "./File";
-import { _writeFile } from "./helper/_writeFile";
 import { _fileConverter } from "./helper/_fileConverter/index";
 import { _setFileName } from "./helper/_setFileName";
-import { IOptions } from "./types/saveFile.interface";
+import _writeFile from "./helper/_writeFile";
+import { saveFile } from "./types/saveFile.interface";
 
-interface saveFile {
-  file: Buffer | unknown | null;
-  filePath?: string;
-  options?: IOptions;
-}
-export default function saveFile({ file, filePath = "", options = undefined }: saveFile) {
+export default function saveFile({
+  file,
+  filePath = "",
+  options = undefined,
+}: saveFile) {
   if (!file) {
     throw new Error("Please, specify in first value a file.");
   }
-  let newFile = new File(file, filePath);
+  const type = options?.type || "BinData";
+  let newFile = new File(file, filePath, type);
   try {
     _fileConverter(options, newFile);
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(
-      "You specifed that file is a raw binary data, but it is not"
+      options?.isBinaryData
+        ? "You specifed that file is a raw binary data, but it is not"
+        : error.message
     );
   }
   _setFileName(newFile);
@@ -26,7 +28,7 @@ export default function saveFile({ file, filePath = "", options = undefined }: s
     _writeFile(newFile);
   } catch (error: any) {
     throw new Error(
-      "Something went wrong when creating a file" + error.message
+      "Something went wrong when creating a file" + " " + error.message
     );
   }
   return newFile.getName();
