@@ -1,0 +1,23 @@
+{
+  "name": "save-file",
+  "version": "1.0.0",
+  "description": "will save file in server side",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Choco-milk-for-u/save-file.git"
+  },
+  "author": "choco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Choco-milk-for-u/save-file/issues"
+  },
+  "homepage": "https://github.com/Choco-milk-for-u/save-file#readme",
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "typescript": "^5.1.3"
+  }
+}
