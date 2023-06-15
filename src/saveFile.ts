@@ -4,11 +4,12 @@ import { _fileConverter } from "./helper/_fileConverter/index";
 import { _setFileName } from "./helper/_setFileName";
 import { IOptions } from "./types/saveFile.interface";
 
-export default function saveFile(
-  file: any,
-  filePath: string = "",
-  options: IOptions
-) {
+interface saveFile {
+  file: Buffer | unknown | null;
+  filePath?: string;
+  options?: IOptions;
+}
+export default function saveFile({ file, filePath = "", options = undefined }: saveFile) {
   if (!file) {
     throw new Error("Please, specify in first value a file.");
   }

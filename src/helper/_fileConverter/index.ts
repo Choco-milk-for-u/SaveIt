@@ -1,17 +1,19 @@
 import { File } from "../../File";
+import b from "node:buffer";
 import { IOptions } from "../../types/saveFile.interface";
 import { _ifBinaryData } from "./__ifBinaryData";
 import { _ifRegularFile } from "./__ifRegularData";
 import { _setters } from "./__setters";
 
-export function _fileConverter(options: IOptions, newFile: File) {
+export function _fileConverter(options: IOptions | undefined, newFile: File) {
   let result = null;
   let fileExtension = null;
   const file = newFile.getFile();
-  if (options.isBinaryData) {
+
+  if ((options && options.isBinaryData) || !file.originalname) {
     ({ result, fileExtension } = _ifBinaryData(file, options));
   } else {
-    ({ result, fileExtension } = _ifRegularFile(file));
+    ({ result, fileExtension } = _ifRegularFile(file, options));
   }
   _setters(newFile, result, fileExtension);
 }
