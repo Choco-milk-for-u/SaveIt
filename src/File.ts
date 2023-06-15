@@ -4,7 +4,11 @@ export class File {
   private type: string = "";
   private filePath: string = "";
   private fileName: string = "";
+
   constructor(file: any, filePath: string, type: string) {
+    if (!file) {
+      throw new Error("Please, specify in first value a file.");
+    }
     this.file = file;
     this.filePath = filePath;
     this.type = type;

@@ -9,9 +9,6 @@ export default function saveFile({
   filePath = "",
   options = undefined,
 }: saveFile) {
-  if (!file) {
-    throw new Error("Please, specify in first value a file.");
-  }
   const type = options?.type || "BinData";
   let newFile = new File(file, filePath, type);
   try {
