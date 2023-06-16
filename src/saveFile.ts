@@ -6,7 +6,7 @@ import { saveFile } from "./types/saveFile.interface";
 
 export default function saveFile({
   file,
-  filePath = "",
+  filePath = undefined,
   options = undefined,
 }: saveFile) {
   const type = options?.type || "BinData";

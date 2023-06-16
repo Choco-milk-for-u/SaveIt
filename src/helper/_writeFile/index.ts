@@ -6,12 +6,10 @@ import __returnBuffer from "./__returnBuffer";
 
 export default function _writeFile(newFile: File) {
   const type: string = newFile.getType();
-  const params = [newFile.getFilePath() + "/" + type] || [
-    __dirname,
-    "../..",
-    "static",
-    type,
-  ];
+  const isPathExist = newFile.getFilePath() ? true : false;
+  const params = isPathExist
+    ? [newFile.getFilePath() + "/" + type]
+    : [process.cwd(), "static", type];
   const finalPath = __createDir(params);
   const buffer = __returnBuffer(newFile);
   fs.writeFileSync(path.resolve(finalPath, newFile.getName()), buffer);

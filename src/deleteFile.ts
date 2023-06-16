@@ -1,29 +1,6 @@
-interface IOptionsDelete {
-  deleteAll: boolean;
-}
-interface IDeleteFile {
-  fileID: string;
-  filePath?: string;
-  options?: IOptionsDelete;
-}
 import path from "path";
-import fs from "fs";
-
-function findFile(directoryPath: string, fileName: string, callBack: Function) {
-  fs.readdir(directoryPath, (err, files) => {
-    for (const file of files) {
-      const filePath = path.join(directoryPath, file);
-      fs.stat(filePath, (statErr, stats) => {
-        if (stats.isDirectory()) {
-          findFile(filePath, fileName, callBack);
-        } else if (file === fileName) {
-          return directoryPath;
-        }
-      });
-    }
-  });
-  callBack(null);
-}
+import { IDeleteFile } from "./types/deleteFile.interface";
+import { _delteAtPath } from "./helper/_deleteAtPath";
 
 export default function deleteFile({
   fileID,
@@ -38,31 +15,8 @@ export default function deleteFile({
       "Can not delete all files if path is not specifed for securite reason"
     );
   }
-  if (filePath) {
-    let isError = true;
-    if (fs.existsSync(filePath)) {
-      const neededPath = path.resolve(filePath, fileID);
-      if (fs.existsSync(neededPath)) {
-        isError = false;
-        fs.unlinkSync(neededPath);
-      }
-    }
-    if (isError) {
-      throw new Error("Something is wrong with path");
-    }
-  } else {
-    const finalPath = path.resolve(__dirname, "../..", "static");
-    if (fs.existsSync(finalPath)) {
-      const neededPath = path.resolve(finalPath, fileID);
-      if (fs.existsSync(neededPath)) {
-        fs.unlinkSync(neededPath);
-      } else {
-        findFile(finalPath, fileID, (resultPath: string) => {
-          if (resultPath) {
-            fs.unlinkSync(resultPath);
-          }
-        });
-      }
-    }
-  }
+  const staticPath = [process.cwd(), "static"];
+  return filePath
+    ? _delteAtPath(fileID, path.resolve(filePath), true, true)
+    : _delteAtPath(fileID, path.resolve(...staticPath));
 }

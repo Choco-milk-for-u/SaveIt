@@ -2,10 +2,10 @@ export class File {
   private file: any = null;
   private fileExtention: string = "bin";
   private type: string = "";
-  private filePath: string = "";
+  private filePath: string | undefined = undefined;
   private fileName: string = "";
 
-  constructor(file: any, filePath: string, type: string) {
+  constructor(file: any, filePath: string | undefined, type: string) {
     if (!file) {
       throw new Error("Please, specify in first value a file.");
     }

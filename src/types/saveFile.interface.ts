@@ -6,6 +6,6 @@ export interface IOptions {
 }
 export interface saveFile {
   file: Buffer | unknown | null;
-  filePath?: string;
+  filePath?: string | undefined;
   options?: IOptions;
 }
