@@ -8,9 +8,7 @@ const _callBack = (resultPath: string, fileName: string) => {
   let result = false;
   if (resultPath) {
     const neededPath = path.resolve(resultPath, fileName);
-    console.log("DELETED");
-    console.log(neededPath);
-    // fs.unlinkSync(neededPath);
+    fs.unlinkSync(neededPath);
     result = true;
   }
   return result;
@@ -30,15 +28,12 @@ export function _delteAtPath(
   if (fs.existsSync(into)) {
     const neededPath = path.resolve(into, fileID);
     if (fs.existsSync(neededPath)) {
-      console.log("DELETED");
-      console.log(neededPath);
-      // fs.unlinkSync(neededPath);
+      fs.unlinkSync(neededPath);
       if (options?.deleteAll) {
         fs.readdir(into, (err: any, files) => {
-          for (let file in files) {
+          for (let file of files) {
             if (file !== fileID) {
-              console.log("DELETED");
-              // fs.unlinkSync(file);
+              fs.unlinkSync(file);
             }
           }
         });
