@@ -15,8 +15,11 @@ export default function deleteFile({
       "Can not delete all files if path is not specifed for securite reason"
     );
   }
-  const staticPath = [process.cwd(), "static"];
-  return filePath
-    ? _delteAtPath(fileID, path.resolve(filePath), true, true)
-    : _delteAtPath(fileID, path.resolve(...staticPath));
+  const staticPath = [options?.src || process.cwd(), "static"];
+  if (filePath) {
+    const userPath = options?.src ? [options.src, filePath] : [filePath];
+    const funOptions = { isErrNeed: true, isPathSpecifed: true };
+    return _delteAtPath(fileID, path.join(...userPath), funOptions);
+  }
+  return _delteAtPath(fileID, path.resolve(...staticPath));
 }

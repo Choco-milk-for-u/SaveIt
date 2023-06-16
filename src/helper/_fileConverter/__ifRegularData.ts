@@ -1,9 +1,9 @@
 import { IOptions } from "./../../types/saveFile.interface";
 
-function __ifMulter(file: any) {
+function __ifMulter(file: any, options: OptionRegularFile) {
   return {
     result: file,
-    fileExtension: file.originalname.split(".").pop(),
+    fileExtension: options?.fileExtention || file.originalname.split(".").pop(),
   };
 }
 type OptionRegularFile = IOptions | undefined;
@@ -13,7 +13,7 @@ function __ifBuffer(file: any, options: OptionRegularFile) {
 export function _ifRegularFile(file: any, options: OptionRegularFile) {
   options = options ? options : { fileType: "express" };
   const obj = {
-    multer: (file: any) => __ifMulter(file),
+    multer: (file: any) => __ifMulter(file, options),
     buffer: (file: any) => __ifBuffer(file, options),
   };
   const key: string = options.fileType?.toLocaleLowerCase() || "multer";

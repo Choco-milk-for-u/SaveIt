@@ -4,12 +4,15 @@ import { File } from "../../File";
 import __createDir from "./__createDir";
 import __returnBuffer from "./__returnBuffer";
 
-export default function _writeFile(newFile: File) {
+export default function _writeFile(newFile: File, src?: string) {
   const type: string = newFile.getType();
   const isPathExist = newFile.getFilePath() ? true : false;
   const params = isPathExist
     ? [newFile.getFilePath() + "/" + type]
     : [process.cwd(), "static", type];
+  if (src) {
+    params.unshift(src);
+  }
   const finalPath = __createDir(params);
   const buffer = __returnBuffer(newFile);
   fs.writeFileSync(path.resolve(finalPath, newFile.getName()), buffer);

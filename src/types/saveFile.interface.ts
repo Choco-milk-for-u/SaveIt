@@ -3,6 +3,7 @@ export interface IOptions {
   type?: string;
   fileExtention?: string;
   fileType?: string;
+  src?: string;
 }
 export interface saveFile {
   file: Buffer | unknown | null;

@@ -22,7 +22,7 @@ export default function saveFile({
   }
   _setFileName(newFile);
   try {
-    _writeFile(newFile);
+    _writeFile(newFile, options?.src);
   } catch (error: any) {
     throw new Error(
       "Something went wrong when creating a file" + " " + error.message

@@ -1,3 +1,4 @@
+import { IOptionsDelete } from "./../types/deleteFile.interface";
 import fs from "fs";
 import path from "path";
 import { _findFile } from "./_findFile";
@@ -7,31 +8,48 @@ const _callBack = (resultPath: string, fileName: string) => {
   let result = false;
   if (resultPath) {
     const neededPath = path.resolve(resultPath, fileName);
-    fs.unlinkSync(neededPath);
+    console.log("DELETED");
+    console.log(neededPath);
+    // fs.unlinkSync(neededPath);
     result = true;
   }
   return result;
 };
+interface IDeletePath {
+  isErrNeed: boolean;
+  isPathSpecifed: boolean;
+}
 // main logic
 export function _delteAtPath(
   fileID: string,
   into: string,
-  isErrNeed: boolean = false,
-  isPathSpecifed: boolean = false
+  funOptions?: IDeletePath,
+  options?: IOptionsDelete
 ) {
   let isError = true;
   if (fs.existsSync(into)) {
     const neededPath = path.resolve(into, fileID);
     if (fs.existsSync(neededPath)) {
       console.log("DELETED");
+      console.log(neededPath);
       // fs.unlinkSync(neededPath);
+      if (options?.deleteAll) {
+        fs.readdir(into, (err: any, files) => {
+          for (let file in files) {
+            if (file !== fileID) {
+              console.log("DELETED");
+              // fs.unlinkSync(file);
+            }
+          }
+        });
+      }
       return true;
     }
-    if (!isPathSpecifed) {
+    if (!funOptions?.isPathSpecifed) {
       isError = _findFile(into, fileID, _callBack);
     }
   }
-  if (isErrNeed && isError) {
+  if (funOptions?.isErrNeed && isError) {
     throw new Error("Something is wrong with path");
   }
   return false;
