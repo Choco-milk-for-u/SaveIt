@@ -15,6 +15,14 @@ export default function deleteFile({
       "Can not delete all files if path is not specifed for securite reason"
     );
   }
+  // DELETE THIS IF STATEMENT IF YOU WANT TO USE deleteAll.
+  // ============================================================
+  if(options?.deleteAll){
+    throw new Error(
+      "Sorry, it is too hight rist, but if you are sure that you want use this, then you have to delete this if statement. Then it will work"
+    );
+  }
+  // =============================================================
   const rootDir = options?.src || process.cwd();
   const staticPath = [rootDir, "static"];
   if (filePath) {

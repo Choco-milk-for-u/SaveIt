@@ -1,22 +1,37 @@
 {
-  "name": "save-file",
+  "name": "saveit",
   "version": "1.0.0",
-  "description": "will save file in server side",
-  "main": "src/index.js",
+  "description": "Package that will save files, for frameworks such as express.js and festify. Will save files in static folder.",
+  "main": "src/index.ts",
   "type": "module",
+  "keywords": [
+    "node.js",
+    "express.js",
+    "file saving",
+    "file save",
+    "save file",
+    "saving file",
+    "fastify",
+    "nodejs",
+    "node js",
+    "express js",
+    "express",
+    "patterns",
+    "pattern"
+  ],
   "scripts": {
     "deploy": "rollup --config rollup.config.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Choco-milk-for-u/save-file.git"
+    "url": "git+https://github.com/Choco-milk-for-u/SaveIt.git"
   },
   "author": "choco",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Choco-milk-for-u/save-file/issues"
+    "url": "https://github.com/Choco-milk-for-u/SaveIt/issues"
   },
-  "homepage": "https://github.com/Choco-milk-for-u/save-file#readme",
+  "homepage": "https://github.com/Choco-milk-for-u/SaveIt#readme",
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.1",
     "@types/node": "^20.3.1",

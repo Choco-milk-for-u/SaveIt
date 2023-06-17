@@ -29,7 +29,9 @@ export function _delteAtPath(
     const neededPath = path.resolve(into, fileID);
     if (fs.existsSync(neededPath)) {
       fs.unlinkSync(neededPath);
-      if (options?.deleteAll) {
+      // secure level, for not letting dumbass delete the whole system.
+      const folderLevel = neededPath.split("\\") || neededPath.split("/");
+      if (options?.deleteAll && folderLevel.length > 2) {
         fs.readdir(into, (err: any, files) => {
           for (let file of files) {
             if (file !== fileID) {

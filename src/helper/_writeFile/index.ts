@@ -3,15 +3,17 @@ import path from "path";
 import { File } from "../../File";
 import __createDir from "./__createDir";
 import __returnBuffer from "./__returnBuffer";
+import { __changeTheRootPath } from "./__changeTheRootPath";
 
 export default function _writeFile(newFile: File, src?: string) {
   const type: string = newFile.getType();
-  const isPathExist = newFile.getFilePath() ? true : false;
+  const tempPath = newFile.getFilePath();
+  const isPathExist = tempPath ? true : false;
   const params = isPathExist
-    ? [newFile.getFilePath() + "/" + type]
+    ? [tempPath + "/" + type]
     : [process.cwd(), "static", type];
   if (src) {
-    params.unshift(src);
+    __changeTheRootPath(params, isPathExist, src);
   }
   const finalPath = __createDir(params);
   const buffer = __returnBuffer(newFile);
