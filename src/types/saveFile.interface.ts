@@ -4,6 +4,7 @@ export interface IOptions {
   fileExtention?: string;
   fileType?: string;
   src?: string;
+  folderGenerate?: boolean;
 }
 export interface saveFile {
   file: Buffer | unknown | null;

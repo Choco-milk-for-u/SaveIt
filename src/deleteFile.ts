@@ -10,14 +10,14 @@ export default function deleteFile({
 }: IDeleteFile) {
   _checkFunctionParam({ fileID, options, filePath });
   const rootDir = options?.src || process.cwd();
-  const staticPath = [rootDir, "static"];
   let into = null;
   if (filePath) {
-    const userPath = options?.src ? [options.src, filePath] : [filePath];
+    const userPath = [rootDir, filePath];
     const funOptions = { isErrNeed: true, isPathSpecifed: true };
     into = path.join(...userPath);
     return _delteAtPath({ fileID, into, funOptions, options });
   }
-  into = path.resolve(...staticPath);
+  const staticPath = [rootDir, "static"];
+  into = path.join(...staticPath);
   return _delteAtPath({ fileID, into, options });
 }

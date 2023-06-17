@@ -1,6 +1,7 @@
 import { File } from "./File";
 import { _fileConverter } from "./helper/_fileConverter/index";
 import { _setFileName } from "./helper/_setFileName";
+import { _typeGenerating } from "./helper/_typeGenerating";
 import _writeFile from "./helper/_writeFile/index";
 import { saveFile } from "./types/saveFile.interface";
 
@@ -9,7 +10,7 @@ export default function saveFile({
   filePath = undefined,
   options = undefined,
 }: saveFile) {
-  const type = options?.type || (options?.isBinaryData ? "BinData" : "BuffData");
+  const type = _typeGenerating(options);
   let newFile = new File(file, filePath, type);
   try {
     _fileConverter(options, newFile);

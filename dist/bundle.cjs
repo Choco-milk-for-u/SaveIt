@@ -179,6 +179,14 @@ function _setFileName(newFile) {
     newFile.setFileName(name);
 }
 
+function _typeGenerating(options) {
+    var isGenerateNeeded = options === null || options === void 0 ? void 0 : options.folderGenerate;
+    var folderGenerating = isGenerateNeeded === undefined ? true : isGenerateNeeded;
+    var defaultName = (options === null || options === void 0 ? void 0 : options.isBinaryData) ? "BinData" : "BuffData";
+    var folderName = (options === null || options === void 0 ? void 0 : options.type) || defaultName;
+    return folderGenerating ? folderName : "";
+}
+
 function __createDir(params) {
     var finalPath = path.resolve.apply(path, params);
     if (!fs.existsSync(finalPath)) {
@@ -216,7 +224,7 @@ function _writeFile(newFile, src) {
 
 function saveFile(_a) {
     var file = _a.file, _b = _a.filePath, filePath = _b === void 0 ? undefined : _b, _c = _a.options, options = _c === void 0 ? undefined : _c;
-    var type = (options === null || options === void 0 ? void 0 : options.type) || ((options === null || options === void 0 ? void 0 : options.isBinaryData) ? "BinData" : "BuffData");
+    var type = _typeGenerating(options);
     var newFile = new File(file, filePath, type);
     try {
         _fileConverter(options, newFile);
@@ -236,16 +244,18 @@ function saveFile(_a) {
     return newFile.getName();
 }
 
-function _findFile(directoryPath, fileName, callBack) {
+function _findFile(directoryPath, fileName, ignoreExtension, callBack) {
     fs.readdir(directoryPath, function (err, files) {
         var _loop_1 = function (file) {
             var filePath = path.join(directoryPath, file);
             fs.stat(filePath, function (statErr, stats) {
+                var infoFile = path.parse(filePath);
+                var currentFile = ignoreExtension ? infoFile.name : file;
                 if (stats.isDirectory()) {
-                    _findFile(filePath, fileName, callBack);
+                    _findFile(filePath, fileName, ignoreExtension, callBack);
                 }
-                else if (file === fileName) {
-                    return callBack(directoryPath, fileName);
+                else if (currentFile === fileName) {
+                    return callBack(directoryPath, "".concat(infoFile.name).concat(infoFile.ext));
                 }
             });
         };
@@ -257,61 +267,81 @@ function _findFile(directoryPath, fileName, callBack) {
     return callBack(null);
 }
 
-// just call back for return result
-var _callBack = function (resultPath, fileName) {
+function __callback(resultPath, fileName) {
     var result = false;
     if (resultPath) {
         var neededPath = path.resolve(resultPath, fileName);
         fs.unlinkSync(neededPath);
         result = true;
     }
-    return result;
-};
-// main logic
-function _delteAtPath(fileID, into, funOptions, options) {
-    var isError = true;
-    if (fs.existsSync(into)) {
-        var neededPath = path.resolve(into, fileID);
-        if (fs.existsSync(neededPath)) {
-            fs.unlinkSync(neededPath);
-            if (options === null || options === void 0 ? void 0 : options.deleteAll) {
-                fs.readdir(into, function (err, files) {
-                    for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
-                        var file = files_1[_i];
-                        if (file !== fileID) {
-                            fs.unlinkSync(file);
-                        }
-                    }
-                });
+    return !result;
+}
+
+function __deleteFile(neededPath, options, into, fileID) {
+    fs.unlinkSync(neededPath);
+    // secure level, for not letting dumbass delete the whole system.
+    var folderLevel = neededPath.split("\\") || neededPath.split("/");
+    if ((options === null || options === void 0 ? void 0 : options.deleteAll) && folderLevel.length > 2) {
+        fs.readdir(into, function (err, files) {
+            for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
+                var file = files_1[_i];
+                if (file !== fileID) {
+                    fs.unlinkSync(file);
+                }
             }
-            return true;
-        }
-        if (!(funOptions === null || funOptions === void 0 ? void 0 : funOptions.isPathSpecifed)) {
-            isError = _findFile(into, fileID, _callBack);
-        }
+        });
+    }
+    return true;
+}
+
+function _delteAtPath(_a) {
+    var fileID = _a.fileID, _b = _a.funOptions, funOptions = _b === void 0 ? undefined : _b, options = _a.options, into = _a.into;
+    var isError = true;
+    var neededFile = path.join(into, fileID);
+    if (fs.existsSync(neededFile)) {
+        isError = false;
+        return __deleteFile(neededFile, options, into, fileID);
+    }
+    var ignoreExtension = (options === null || options === void 0 ? void 0 : options.ignoreExtension) || false;
+    if (!(funOptions === null || funOptions === void 0 ? void 0 : funOptions.isPathSpecifed) || ignoreExtension) {
+        isError = _findFile(into, fileID, ignoreExtension, __callback);
     }
     if ((funOptions === null || funOptions === void 0 ? void 0 : funOptions.isErrNeed) && isError) {
         throw new Error("Something is wrong with path");
     }
-    return false;
+    return !isError;
 }
 
-function deleteFile(_a) {
-    var fileID = _a.fileID, _b = _a.filePath, filePath = _b === void 0 ? undefined : _b, _c = _a.options, options = _c === void 0 ? undefined : _c;
+function _checkFunctionParam(_a) {
+    var fileID = _a.fileID, filePath = _a.filePath, options = _a.options;
     if (!fileID) {
         throw new Error("Please specify in first value an id of a file");
     }
     if ((options === null || options === void 0 ? void 0 : options.deleteAll) && !filePath) {
         throw new Error("Can not delete all files if path is not specifed for securite reason");
     }
-    var rootDir = (options === null || options === void 0 ? void 0 : options.src) || process.cwd();
-    var staticPath = [rootDir, "static"];
-    if (filePath) {
-        var userPath = (options === null || options === void 0 ? void 0 : options.src) ? [options.src, filePath] : [filePath];
-        var funOptions = { isErrNeed: true, isPathSpecifed: true };
-        return _delteAtPath(fileID, path.join.apply(path, userPath), funOptions);
+    // DELETE THIS IF STATEMENT IF YOU WANT TO USE deleteAll.
+    // ============================================================
+    if (options === null || options === void 0 ? void 0 : options.deleteAll) {
+        throw new Error("Sorry, it is too hight risk, but if you are sure that you want to use this, then you have to delete this if statement. Then it will work");
     }
-    return _delteAtPath(fileID, path.resolve.apply(path, staticPath));
+    // =============================================================
+}
+
+function deleteFile(_a) {
+    var fileID = _a.fileID, _b = _a.filePath, filePath = _b === void 0 ? undefined : _b, _c = _a.options, options = _c === void 0 ? undefined : _c;
+    _checkFunctionParam({ fileID: fileID, options: options, filePath: filePath });
+    var rootDir = (options === null || options === void 0 ? void 0 : options.src) || process.cwd();
+    var into = null;
+    if (filePath) {
+        var userPath = [rootDir, filePath];
+        var funOptions = { isErrNeed: true, isPathSpecifed: true };
+        into = path.join.apply(path, userPath);
+        return _delteAtPath({ fileID: fileID, into: into, funOptions: funOptions, options: options });
+    }
+    var staticPath = [rootDir, "static"];
+    into = path.join.apply(path, staticPath);
+    return _delteAtPath({ fileID: fileID, into: into, options: options });
 }
 
 exports.deleteFile = deleteFile;

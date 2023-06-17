@@ -1,6 +1,7 @@
 export interface IOptionsDelete {
   deleteAll?: boolean;
   src?: string;
+  ignoreExtension?: boolean;
 }
 export interface IDeleteFile {
   fileID: string;
