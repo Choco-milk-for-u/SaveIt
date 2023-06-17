@@ -91,6 +91,9 @@ It will be your time savior and also will be great as refactor mind.
 * type
   * default is BuffData / BinData (if options.isBinaryData true then BinData). 
   * string that tell what kind of file is it, it is not reqired and only will create a folder with name of type value.
+* folderGenerate
+  * default is true
+  * boolean that tell should SaveIt generate folder in path (default path) from type properite in options.
 * fileExtention
   * default related to fileType of isBinaryData otpions properites
   * without a dot (.)
@@ -172,6 +175,9 @@ It will be your time savior and also will be great as refactor mind.
   * default is working root
   * it will pass the string to path.resolve() so if you will pass "/a", then it will probably create find or create folder in C:\a
   * string that point **SaveIt** what the root folder is. (will work in that folder)
+* ignoreExtension
+  * default is false
+  * boolean that tell **SaveIt** is fileID a name with extension or not. If not then it will delete first file with name that math.
 **Dangerouse, do not use that if you are not a profy, it may delete everything in your personal computer**
 * deleteAll
   * default is false 
