@@ -12,17 +12,19 @@ export function _delteAtPath({
   into,
 }: IDeleteAtPathFun) {
   let isError = true;
+  let result = false;
   const neededFile = path.join(into, fileID);
   if (fs.existsSync(neededFile)) {
-    isError = false;
-    return __deleteFile(neededFile, options, into, fileID);
+    result = __deleteFile(neededFile, options, into, fileID);
+    isError = !result;
   }
   const ignoreExtension = options?.ignoreExtension || false;
   if (!funOptions?.isPathSpecifed || ignoreExtension) {
-    isError = _findFile(into, fileID, ignoreExtension, __callback);
+    result = _findFile(into, fileID, ignoreExtension, __callback);
+    isError = !result;
   }
   if (funOptions?.isErrNeed && isError) {
     throw new Error("Something is wrong with path");
   }
-  return !isError;
+  return result;
 }

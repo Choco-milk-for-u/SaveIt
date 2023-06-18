@@ -245,26 +245,21 @@ function saveFile(_a) {
 }
 
 function _findFile(directoryPath, fileName, ignoreExtension, callBack) {
-    fs.readdir(directoryPath, function (err, files) {
-        var _loop_1 = function (file) {
-            var filePath = path.join(directoryPath, file);
-            fs.stat(filePath, function (statErr, stats) {
-                var infoFile = path.parse(filePath);
-                var currentFile = ignoreExtension ? infoFile.name : file;
-                if (stats.isDirectory()) {
-                    _findFile(filePath, fileName, ignoreExtension, callBack);
-                }
-                else if (currentFile === fileName) {
-                    return callBack(directoryPath, "".concat(infoFile.name).concat(infoFile.ext));
-                }
-            });
-        };
-        for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
-            var file = files_1[_i];
-            _loop_1(file);
+    var files = fs.readdirSync(directoryPath);
+    for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
+        var file = files_1[_i];
+        var filePath = path.join(directoryPath, file);
+        var status = fs.statSync(filePath);
+        var infoFile = path.parse(filePath);
+        var currentFile = ignoreExtension ? infoFile.name : file;
+        if (status.isDirectory()) {
+            return _findFile(filePath, fileName, ignoreExtension, callBack);
         }
-    });
-    return callBack(null);
+        else if (currentFile === fileName) {
+            return callBack(directoryPath, "".concat(infoFile.name).concat(infoFile.ext));
+        }
+    }
+    return callBack(false);
 }
 
 function __callback(resultPath, fileName) {
@@ -274,7 +269,7 @@ function __callback(resultPath, fileName) {
         fs.unlinkSync(neededPath);
         result = true;
     }
-    return !result;
+    return result;
 }
 
 function __deleteFile(neededPath, options, into, fileID) {
@@ -297,19 +292,21 @@ function __deleteFile(neededPath, options, into, fileID) {
 function _delteAtPath(_a) {
     var fileID = _a.fileID, _b = _a.funOptions, funOptions = _b === void 0 ? undefined : _b, options = _a.options, into = _a.into;
     var isError = true;
+    var result = false;
     var neededFile = path.join(into, fileID);
     if (fs.existsSync(neededFile)) {
-        isError = false;
-        return __deleteFile(neededFile, options, into, fileID);
+        result = __deleteFile(neededFile, options, into, fileID);
+        isError = !result;
     }
     var ignoreExtension = (options === null || options === void 0 ? void 0 : options.ignoreExtension) || false;
     if (!(funOptions === null || funOptions === void 0 ? void 0 : funOptions.isPathSpecifed) || ignoreExtension) {
-        isError = _findFile(into, fileID, ignoreExtension, __callback);
+        result = _findFile(into, fileID, ignoreExtension, __callback);
+        isError = !result;
     }
     if ((funOptions === null || funOptions === void 0 ? void 0 : funOptions.isErrNeed) && isError) {
         throw new Error("Something is wrong with path");
     }
-    return !isError;
+    return result;
 }
 
 function _checkFunctionParam(_a) {

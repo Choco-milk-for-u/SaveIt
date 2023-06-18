@@ -7,5 +7,5 @@ export function __callback(resultPath: string, fileName: string) {
     fs.unlinkSync(neededPath);
     result = true;
   }
-  return !result;
+  return result;
 }

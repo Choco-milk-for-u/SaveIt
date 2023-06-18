@@ -7,19 +7,17 @@ export function _findFile(
   ignoreExtension: boolean,
   callBack: Function
 ) {
-  fs.readdir(directoryPath, (err, files) => {
-    for (const file of files) {
-      const filePath = path.join(directoryPath, file);
-      fs.stat(filePath, (statErr, stats) => {
-        const infoFile = path.parse(filePath);
-        const currentFile = ignoreExtension ? infoFile.name : file;
-        if (stats.isDirectory()) {
-          _findFile(filePath, fileName, ignoreExtension, callBack);
-        } else if (currentFile === fileName) {
-          return callBack(directoryPath, `${infoFile.name}${infoFile.ext}`);
-        }
-      });
+  const files = fs.readdirSync(directoryPath);
+  for (const file of files) {
+    const filePath = path.join(directoryPath, file);
+    const status = fs.statSync(filePath);
+    const infoFile = path.parse(filePath);
+    const currentFile = ignoreExtension ? infoFile.name : file;
+    if (status.isDirectory()) {
+      return _findFile(filePath, fileName, ignoreExtension, callBack);
+    } else if (currentFile === fileName) {
+      return callBack(directoryPath, `${infoFile.name}${infoFile.ext}`);
     }
-  });
-  return callBack(null);
+  }
+  return callBack(false);
 }
