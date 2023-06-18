@@ -17,7 +17,7 @@ export default function saveFile({
   } catch (error: any) {
     throw new Error(
       options?.isBinaryData
-        ? "You specifed that file is a raw binary data, but it is not"
+        ? "You indicated that the file is binary data, but it is not."
         : error.message
     );
   }
@@ -26,7 +26,7 @@ export default function saveFile({
     _writeFile(newFile, options?.src);
   } catch (error: any) {
     throw new Error(
-      "Something went wrong when creating a file" + " " + error.message
+      "Something went wrong when creating the file" + " " + error.message
     );
   }
   return newFile.getName();

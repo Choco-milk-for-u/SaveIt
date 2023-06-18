@@ -8,7 +8,7 @@ export interface IDeleteFile {
   filePath?: string;
   options?: IOptionsDelete;
 }
-interface IDeletePath {
+export interface IDeletePath {
   isErrNeed: boolean;
   isPathSpecifed: boolean;
 }

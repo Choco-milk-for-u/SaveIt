@@ -1,11 +1,11 @@
 {
-  "name": "saveit",
+  "name": "saveit.c",
   "version": "1.0.0",
-  "description": "Package that will save files, for frameworks such as express.js and festify. Will save files in static folder.",
+  "description": "SaveIt is a package that allows you to save files in a static folder (or anywhere else). Many Node.js frameworks have their own way of handling files (fastify, multer). SaveIt has the ability to consider it. The package has two functions (save and delete). TypeScript support and small file size will help you get started very quickly.",
   "main": "dist/bundle.cjs",
   "files": ["dist/"],
   "types": "dist/types/index.d.ts",
-  "type": "module",
+  "type": "commonjs",
   "keywords": [
     "node.js",
     "express.js",

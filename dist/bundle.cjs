@@ -231,7 +231,7 @@ function saveFile(_a) {
     }
     catch (error) {
         throw new Error((options === null || options === void 0 ? void 0 : options.isBinaryData)
-            ? "You specifed that file is a raw binary data, but it is not"
+            ? "You indicated that the file is binary data, but it is not."
             : error.message);
     }
     _setFileName(newFile);
@@ -239,7 +239,7 @@ function saveFile(_a) {
         _writeFile(newFile, options === null || options === void 0 ? void 0 : options.src);
     }
     catch (error) {
-        throw new Error("Something went wrong when creating a file" + " " + error.message);
+        throw new Error("Something went wrong when creating the file" + " " + error.message);
     }
     return newFile.getName();
 }
@@ -312,15 +312,15 @@ function _delteAtPath(_a) {
 function _checkFunctionParam(_a) {
     var fileID = _a.fileID, filePath = _a.filePath, options = _a.options;
     if (!fileID) {
-        throw new Error("Please specify in first value an id of a file");
+        throw new Error("Please specify file name/id");
     }
     if ((options === null || options === void 0 ? void 0 : options.deleteAll) && !filePath) {
-        throw new Error("Can not delete all files if path is not specifed for securite reason");
+        throw new Error("You cannot delete all files without specifying the file path.");
     }
-    // DELETE THIS IF STATEMENT IF YOU WANT TO USE deleteAll.
+    // DELETE THIS IF STATEMENT IF YOU WANT TO DELETE ALL FILES. IT'S YOUR OWN DECISION
     // ============================================================
     if (options === null || options === void 0 ? void 0 : options.deleteAll) {
-        throw new Error("Sorry, it is too hight risk, but if you are sure that you want to use this, then you have to delete this if statement. Then it will work");
+        throw new Error("Sorry, this is too much of a risk, but if you are sure you want to use this, go to node_modules folder find the SaveIt folder and remove the single if statement. Then everything will work");
     }
     // =============================================================
 }
