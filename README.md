@@ -1,9 +1,8 @@
 # SaveIt
-It is a npm package that allows you to save files into a static folder (or anywhey else). It consider the fact that many node.js back-end frameworks has own object that you recieved when your server handle a file 
-so SaveIt has a support of some popular back-end frameworks. Also SaveIt has a delete function that delete files.
+**SaveIt** is a package that allows you to save files in a static folder (or anywhere else). Many Node.js frameworks have their own way of handling files (fastify, multer). **SaveIt** has the ability to consider it. The package has two functions (save and delete). TypeScript support and small file size will help you get started very quickly.
 # Usage
 ```js
-import { saveFile } from "./saveit.mjs"; // or .cjs
+import { saveFile } from "saveit.mjs"; // or .cjs
 
 // yourFile is a file or a buffer/binary data
 saveFile({file: yourFile});
@@ -12,175 +11,174 @@ saveFile({file: yourFile});
 | Way to install     |    command |  version|
 | :-------------: |:-------------:| :-----:|
 | **NPM**      | `npm i saveit.cjs` | commonJS|
-| **NPM**      | `npm i saveit.mjs` | ecmaJS  |
-| **YARN**      | -            |-|
+| **NPM**      | `npm i saveit.cjs` | commonJS|
+| **NPM**      | `npm i @types/saveit.cjs` | commonJS|
+| **NPM**      | `npm i @types/saveit.mjs` | ecmaJS  |
 # Why?
-It will be your time savior and also will be great as refactor mind.
+This will help you save time and also serve as a great refactoring tool.
 # All functions
 
 ## saveFile
-### how to use
+### How to use
 <details>
   <summary>Ecma JS</summary>
- 
   <h4>Simple example</h4>
   
 ```js
-  import { saveFile } from "./saveit.mjs";
-  saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return true if success
+  import { saveFile } from "saveit.mjs";
+  saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return the file ID on success
 ```
-  
-  <h4>Senior example</h4>
+  <h4>Senior example</h4> 
   
 ```js
-    import { saveFile } from "./saveit.mjs";
+    import { saveFile } from "saveit.mjs";
     
-    const options = {
+    const yourOptions = {
     isBinaryData: yourBoolean,
     type: yourType,
+    folderGenerate: yourFolderBoolean,
     fileExtention: yourFileExtension,
     fileType: yourFileType,
     src: yourSrc
     }
-    saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return id (name of the file) if success
+    saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return the file ID on success
 ```
 </details>
 
 <details>
   <summary>Common JS</summary>
-  
   <h4>Simple example</h4>
   
 ```js
-  const {saveFile} = require("./saveit.cjs");
-  saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return id (name of the file) if success
+  const {saveFile} = require("saveit.cjs");
+  saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return the file ID on success
 ```
-  
   <h4>Senior example</h4>
   
 ```js
-    const {saveFile} = require("./saveit.cjs");
+    const {saveFile} = require("saveit.cjs");
     
-    const options = {
+    const yourOptions = {
     isBinaryData: yourBoolean,
     type: yourType,
     fileExtention: yourFileExtension,
+    folderGenerate: yourFolderBoolean, 
     fileType: yourFileType,
     src: yourSrc
     }
-    saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return true if success
+    saveFile({file: yourFile, filePath: yourFile, options: yourOptions}); // will return the file ID on success
 ```
-  
 </details>
 
-### parametrs
+### Parameters
 * file
   * reqired
-  * It is a buffer / binary data or an object that is supported one of frameworks. (if it is raw binary data, options is needed) 
+  * Buffer / Binary data OR Object from the framework file processing. If it is an object, you must use <ins>fileType</ins> property of the otpions object. If it is raw binary data, you must use <ins>isBinaryData</ins> property of the otpions object.
 * filePath
   * not reqired
-  * it will pass the string to path.resolve() so if you will path "/a", then it will probably create find or create folder in C:\a
-  * String that pointed where you want to save the file (will create that path if path does not exist).
+  * String that will point **SaveIt** to the location where you want to save the file.
+  * The string will be passed to the path.resolve method of Node.js. So if you will pass `/a`, it will probably ( If you did not specify the src property in the options parameter of the saveFile function) go in `C:\a`.
+  * Will create the path if it does not exist.
 * options
   * not reqired 
-  * Object that can make your life a little bit easier (read about options properites in options section). 
-### options
+  * Object that can make your life a little easier (read about the properties of the options in the "Options" section). 
+### Options
 * isBinaryData
   * default is false 
-  * boolean. true - tells that value file in parametr of the function is binary data. (Will ignore fileType)
+  * Boolean value that tells **SaveIt** whether the value in the function parameter (file parameter) is binary data.
+  * Will ignore fileType propertie of the options object.
 * type
-  * default is BuffData / BinData (if options.isBinaryData true then BinData). 
-  * string that tell what kind of file is it, it is not reqired and only will create a folder with name of type value.
+  * default is BuffData / BinData (if options.isBinaryData equals true then BinData). 
+  * String that tells **SaveIt** what the file is, it is optional and will only create a folder with the name of the value.
 * folderGenerate
   * default is true
-  * boolean that tell should SaveIt generate folder in path (default path) from type properite in options.
+  * Boolean value indicating whether **SaveIt** should generate the folder based on the type propertie from options object.
 * fileExtention
-  * default related to fileType of isBinaryData otpions properites
-  * without a dot (.)
-  * string that tell what file extension **SaveIt** is supposed to save as it will ignore fileType option when will write file extension
+  * default is .bin or .txt (if options.isBinaryData equals true then .bin). 
+  * String that tells **SaveIt** which extension the file should have when saved. The original file extension will be ignored.
+  * Do **not** include the dot (.)
 * fileType
   * default is buffer
-  * string that tell **SaveIt** how to work with file. Every frameworks has their own object with own properites name.
-  
+  * String that tells **SaveIt** how to process the file. Each framework has its own object when it works with a file.
+
   list of patterns:
     * buffer
     * multer
     * fastify
 * src
-  * default is working root
-  * it will pass the string to path.resolve() so if you will pass "/a", then it will probably create find or create folder in C:\a
-  * string that point **SaveIt** what the root folder is. (will work in that folder)  
+  * default is your working root
+  * String pointing **SaveIt** to the root folder. (will work in this folder) and is combined with filePath if it exists.
+  * it will pass the string to path.resolve() so if you will pass "/a", then it will set `C:\a` as a root folder.
 ## deleteFile
-### how to use
+### How to use
 <details>
   <summary>Ecma JS</summary>
- 
   <h4>Simple example</h4>
   
 ```js
-  import { deleteFile } from "./saveit.mjs";
-  deleteFile({fileID: nameOfFile, filePath: yourPath, options: yourOptions}); // will return true if success
-```
-  
+  import { deleteFile } from "saveit.mjs";
+  deleteFile({fileID: nameOfFile, filePath: yourPath, options: yourOptions}); // will return true on success
+```  
   <h4>Senior example</h4>
   
 ```js
-    import { deleteFile } from "./saveit.mjs";
+    import { deleteFile } from "saveit.mjs";
     
     const options = {
     deleteAll: yourBoolean,
     src: yourRootPath,
+    ignoreExtension: yourIgnoreBoolean
     }
-    saveFile({fileID: nameOfFile, filePath: yourPath, options: yourOptions}); // will return true if success
+    saveFile({fileID: nameOfFile, filePath: yourPath, options: yourOptions}); // will return true on success
 ```
 </details>
 
 <details>
   <summary>Common JS</summary>
-  
   <h4>Simple example</h4>
   
 ```js
-  const {deleteFile} = require("./saveit.cjs");
-  deleteFile({fileID: yourFile, filePath: yourFile, options: yourOptions}); // will return true if success
+  const {deleteFile} = require("saveit.cjs");
+  deleteFile({fileID: yourFile, filePath: yourFile, options: yourOptions}); // will return true on success
 ```
-  
   <h4>Senior example</h4>
   
 ```js
-  const {deleteFile} = require("./saveit.cjs");
+  const {deleteFile} = require("saveit.cjs");
     
   const options = {
     deleteAll: yourBoolean,
     src: yourRootPath,
+    ignoreExtension: yourIgnoreBoolean
   }
-  deleteFile({fileID: yourFile, filePath: yourFile, options: yourOptions}); // will return true if success
+  deleteFile({fileID: yourFile, filePath: yourFile, options: yourOptions}); // will return true on success
 ```
-  
 </details>
 
-### parametrs
+### Parameters
 * fileID
   * reqired
-  * String that tells the name of the file
+  * String that tells **SaveIt** the name of the file.
 * filePath
   * not reqired
-  * it will pass the string to path.resolve() so if you will path "/a", then it will probably create find or create folder in C:\a
-  * String that pointed where you want to save the file (will create that path if path does not exist).
+  * String that pointig **SaveIt** file path.
+  * If it is not passed, then **SaveIt** will look in the root working folder by default or src property will look for static folder (if it is not there, it will give an error) will look in all files (including folders) and delete the file with name that was specified in fileID, if not, it will return false otherwise it will delete and return true.
+  * The string will be passed to the path.resolve method of Node.js. So if you will pass `/a`, it will probably ( If you did not specify the src property in the options parameter of the saveFile function) go in `C:\a`.
 * options
   * not reqired 
-  * Object that can make your life a little bit easier (read about options properites in options section).
-### options
+  * Object that can make your life a little easier (read about the properties of the options in the "Options" section). 
+### Options
 * src
-  * default is working root
-  * it will pass the string to path.resolve() so if you will pass "/a", then it will probably create find or create folder in C:\a
-  * string that point **SaveIt** what the root folder is. (will work in that folder)
+  * default is your working root
+  * String pointing **SaveIt** to the root folder. (will work in this folder) and is combined with filePath if it exists.
+  * it will pass the string to path.resolve() so if you will pass "/a", then it will set `C:\a` as a root folder.
+  * **WITHOUT FILEPATH WILL ALSO ADD STATIC FOLDER IN THAT STRING**
 * ignoreExtension
   * default is false
-  * boolean that tell **SaveIt** is fileID a name with extension or not. If not then it will delete first file with name that math.
-**Dangerouse, do not use that if you are not a profy, it may delete everything in your personal computer**
+  * Boolean value that tells **SaveIt** whether fileID is a name with extension (.exe,.txt,..etc) or not. If not, the first file with the name that matched will be deleted.
+**Dangerous, do not use this if you are not a professional, it can delete everything in your personal computer**
 * deleteAll
   * default is false 
-  * boolean. true - tells that all file in that path needed to be deleted  
+  * Boolean. true - means that all files on this path should be deleted.  
 # Support
-SaveIt support **Ecma js** and **Common js**. **Typescript** as well with a *package of SavedIt types*.
+SaveIt support **Ecma js** and **Common js** and **Typescript**.
