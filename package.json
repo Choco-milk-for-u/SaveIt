@@ -2,7 +2,9 @@
   "name": "saveit",
   "version": "1.0.0",
   "description": "Package that will save files, for frameworks such as express.js and festify. Will save files in static folder.",
-  "main": "src/index.ts",
+  "main": "dist/bundle.cjs",
+  "files": ["dist/"],
+  "types": "dist/types/index.d.ts",
   "type": "module",
   "keywords": [
     "node.js",

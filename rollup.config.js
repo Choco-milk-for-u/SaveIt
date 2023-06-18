@@ -11,5 +11,5 @@ export default {
       format: "es",
     },
   ],
-  plugins: [typescript({exclude: ['/node_modules']})]
+  plugins: [typescript({exclude: ['/node_modules'], compilerOptions: {declaration: true, declarationDir: './types'}})]
 };
