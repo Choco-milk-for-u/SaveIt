@@ -11,7 +11,7 @@ saveFile({file: yourFile});
 | Way to install     |    command |  version|
 | :-------------: |:-------------:| :-----:|
 | **NPM**      | `npm i saveit.cjs` | commonJS|
-| **NPM**      | `npm i saveit.cjs` | commonJS|
+| **NPM**      | `npm i saveit.mjs` | ecmaJS|
 | **NPM**      | `npm i @types/saveit.cjs` | commonJS|
 | **NPM**      | `npm i @types/saveit.mjs` | ecmaJS  |
 # Why?
