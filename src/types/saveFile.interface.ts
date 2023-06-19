@@ -6,7 +6,7 @@ export interface IOptions {
   src?: string;
   folderGenerate?: boolean;
 }
-export interface saveFile {
+export interface ISaveFile {
   file: Buffer | unknown | null;
   filePath?: string | undefined;
   options?: IOptions;

@@ -11,14 +11,13 @@ saveFile({file: yourFile});
 | Way to install     |    command |  version|
 | :-------------: |:-------------:| :-----:|
 | **NPM**      | `npm i saveit.cjs` | commonJS|
-| **NPM**      | `npm i saveit.cjs` | commonJS|
-| **NPM**      | `npm i @types/saveit.cjs` | commonJS|
-| **NPM**      | `npm i @types/saveit.mjs` | ecmaJS  |
+| **NPM**      | `npm i saveit.mjs` | ecmaJS|
 # Why?
 This will help you save time and also serve as a great refactoring tool.
 # All functions
 
 ## saveFile
+Will return the file ID on success
 ### How to use
 <details>
   <summary>Ecma JS</summary>
@@ -77,7 +76,7 @@ This will help you save time and also serve as a great refactoring tool.
 * filePath
   * not reqired
   * String that will point **SaveIt** to the location where you want to save the file.
-  * The string will be passed to the path.resolve method of Node.js. So if you will pass `/a`, it will probably ( If you did not specify the src property in the options parameter of the saveFile function) go in `C:\a`.
+  * The string will be passed to the path.resolve method of Node.js. So if you will pass `/a`, it will probably ( If you did not specify the <ins>src</ins> property in the options parameter of the saveFile function) go in `C:\a`.
   * Will create the path if it does not exist.
 * options
   * not reqired 
@@ -86,13 +85,13 @@ This will help you save time and also serve as a great refactoring tool.
 * isBinaryData
   * default is false 
   * Boolean value that tells **SaveIt** whether the value in the function parameter (file parameter) is binary data.
-  * Will ignore fileType propertie of the options object.
+  * Will ignore <ins>fileType</ins> propertie of the options object.
 * type
   * default is BuffData / BinData (if options.isBinaryData equals true then BinData). 
-  * String that tells **SaveIt** what the file is, it is optional and will only create a folder with the name of the value.
+  * String that tells **SaveIt** what the file is, it is optional and will only create a folder with the name of the value, where will be the file.
 * folderGenerate
   * default is true
-  * Boolean value indicating whether **SaveIt** should generate the folder based on the type propertie from options object.
+  * Boolean value indicating whether **SaveIt** should generate the folder based on the <ins>type</ins> propertie from options object.
 * fileExtention
   * default is .bin or .txt (if options.isBinaryData equals true then .bin). 
   * String that tells **SaveIt** which extension the file should have when saved. The original file extension will be ignored.
@@ -107,9 +106,10 @@ This will help you save time and also serve as a great refactoring tool.
     * fastify
 * src
   * default is your working root
-  * String pointing **SaveIt** to the root folder. (will work in this folder) and is combined with filePath if it exists.
+  * String pointing **SaveIt** to the root folder. (will work in this folder) and is combined with <ins>filePath</ins> if it exists.
   * it will pass the string to path.resolve() so if you will pass "/a", then it will set `C:\a` as a root folder.
 ## deleteFile
+Will return true on success
 ### How to use
 <details>
   <summary>Ecma JS</summary>
@@ -162,20 +162,21 @@ This will help you save time and also serve as a great refactoring tool.
 * filePath
   * not reqired
   * String that pointig **SaveIt** file path.
-  * If it is not passed, then **SaveIt** will look in the root working folder by default or src property will look for static folder (if it is not there, it will give an error) will look in all files (including folders) and delete the file with name that was specified in fileID, if not, it will return false otherwise it will delete and return true.
-  * The string will be passed to the path.resolve method of Node.js. So if you will pass `/a`, it will probably ( If you did not specify the src property in the options parameter of the saveFile function) go in `C:\a`.
+  * If it is not passed, then **SaveIt** will look in the root working folder by default or <ins>src</ins> property will look for static folder (if it is not there, it will give an error) will look in all files (including folders) and delete the file with name that was specified in <ins>fileID</ins>, if not, it will return false otherwise it will delete and return true.
+  * The string will be passed to the path.resolve method of Node.js. So if you will pass `/a`, it will probably ( If you did not specify the <ins>src</ins> property in the options parameter of the saveFile function) go in `C:\a`.
 * options
   * not reqired 
   * Object that can make your life a little easier (read about the properties of the options in the "Options" section). 
 ### Options
 * src
   * default is your working root
-  * String pointing **SaveIt** to the root folder. (will work in this folder) and is combined with filePath if it exists.
+  * String pointing **SaveIt** to the root folder. (will work in this folder) and is combined with <ins>filePath</ins> if it exists.
   * it will pass the string to path.resolve() so if you will pass "/a", then it will set `C:\a` as a root folder.
-  * **WITHOUT FILEPATH WILL ALSO ADD STATIC FOLDER IN THAT STRING**
+  * **WITHOUT FILEPATH WILL ALSO ADD STATIC FOLDER IN THE END OF THE STRING**
 * ignoreExtension
   * default is false
-  * Boolean value that tells **SaveIt** whether fileID is a name with extension (.exe,.txt,..etc) or not. If not, the first file with the name that matched will be deleted.
+  * Boolean value that tells **SaveIt** whether <ins>fileID</ins> is a name/id with extension (.jpeg,.exe,.txt,..etc) or not. If not, the first file with the name that matched will be deleted.
+
 **Dangerous, do not use this if you are not a professional, it can delete everything in your personal computer**
 * deleteAll
   * default is false 
