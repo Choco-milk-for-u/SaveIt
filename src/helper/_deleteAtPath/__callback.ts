@@ -1,10 +1,10 @@
-import fs from "fs";
+const fs = require('fs').promises;
 import path from "path";
-export function __callback(resultPath: string, fileName: string) {
+export async function __callback(resultPath: string, fileName: string) {
   let result = false;
   if (resultPath) {
     const neededPath = path.resolve(resultPath, fileName);
-    fs.unlinkSync(neededPath);
+    await fs.unlink(neededPath);
     result = true;
   }
   return result;

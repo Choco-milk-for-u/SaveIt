@@ -20,7 +20,7 @@ export function _ifRegularFile(file: any, options: OptionRegularFile) {
   const obj = {
     multer: (file: any) => __ifMulter(file, options),
     buffer: (file: any) => __ifBuffer(file, options),
-    fastify: (file: any) => __ifFastify(file, options),
+    fastify: async (file: any) => await __ifFastify(file, options),
   };
   const key: string = options?.fileType?.toLocaleLowerCase() || "buffer";
   let response = null;

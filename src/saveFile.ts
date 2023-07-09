@@ -14,20 +14,10 @@ export default function saveFile({
   let newFile = new File(file, filePath, type);
   try {
     _fileConverter(options, newFile);
-  } catch (error: any) {
-    throw new Error(
-      options?.isBinaryData
-        ? "You indicated that the file is binary data, but it is not."
-        : error.message
-    );
-  }
-  _setFileName(newFile);
-  try {
+    _setFileName(newFile);
     _writeFile(newFile, options?.src);
   } catch (error: any) {
-    throw new Error(
-      "Something went wrong when creating the file" + " " + error.message
-    );
+    throw new Error(error.message);
   }
   return newFile.getName();
 }

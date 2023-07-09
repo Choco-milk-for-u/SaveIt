@@ -1,11 +1,11 @@
-import fs from "fs";
+const fs = require('fs').promises;
 import path from "path";
 import { File } from "../../File";
 import __createDir from "./__createDir";
 import __returnBuffer from "./__returnBuffer";
 import { __changeTheRootPath } from "./__changeTheRootPath";
 
-export default function _writeFile(newFile: File, src?: string) {
+export default async function _writeFile(newFile: File, src?: string) {
   const type: string = newFile.getType();
   const tempPath = newFile.getFilePath();
   const isPathExist = tempPath ? true : false;
@@ -15,7 +15,7 @@ export default function _writeFile(newFile: File, src?: string) {
   if (src) {
     __changeTheRootPath(params, isPathExist, src);
   }
-  const finalPath = __createDir(params);
+  const finalPath = await __createDir(params);
   const buffer = __returnBuffer(newFile);
-  fs.writeFileSync(path.resolve(finalPath, newFile.getName()), buffer);
+  await fs.writeFile(path.resolve(finalPath, newFile.getName()), buffer);
 }

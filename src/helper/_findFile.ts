@@ -1,16 +1,16 @@
 import path from "path";
-import fs from "fs";
+const fs = require("fs").promises;
 
-export function _findFile(
+export async function _findFile(
   directoryPath: string,
   fileName: string,
   ignoreExtension: boolean,
   callBack: Function
 ) {
-  const files = fs.readdirSync(directoryPath);
+  const files = await fs.readdir(directoryPath);
   for (const file of files) {
     const filePath = path.join(directoryPath, file);
-    const status = fs.statSync(filePath);
+    const status = await fs.stat(filePath);
     const infoFile = path.parse(filePath);
     const currentFile = ignoreExtension ? infoFile.name : file;
     if (status.isDirectory()) {

@@ -1,10 +1,8 @@
-import fs from "fs";
+const fs = require("fs").promises;
 import path from "path";
 
-export default function __createDir(params: string[]) {
+export default async function __createDir(params: string[]) {
   const finalPath = path.resolve(...params);
-  if (!fs.existsSync(finalPath)) {
-    fs.mkdirSync(finalPath, { recursive: true });
-  }
+  await fs.mkdir(finalPath, { recursive: true });
   return finalPath;
 }
